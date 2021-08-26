@@ -1,10 +1,9 @@
 module.exports = {
-  pathPrefix: '/acapulco',
   siteMetadata: {
     title: `Apaculco`,
     description: `Site in constructie.`,
     author: `@zenstok`,
-    siteUrl: `https://zenstok.github.io/corina-website/`,
+    siteUrl: `https://restaurantacapulco.ro`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
