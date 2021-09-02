@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `Apaculco`,
-    description: `Site in constructie.`,
+    title: `Restaurant Apaculco`,
+    description: `Restaurant Acapulco. In curand vom fi din nou impreuna! Pizza; Preparate cu specific romanesc﻿; Cocktail; Atmosfera relaxata; Zambete﻿; Amintiri de neuitat.`,
     author: `@zenstok`,
     siteUrl: `https://restaurantacapulco.ro`,
   },
