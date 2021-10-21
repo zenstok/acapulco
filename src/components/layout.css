@@ -3,6 +3,10 @@
   src: url("../fonts/Fascinate-Regular.otf");
 }
 
+@font-face {
+  font-family: "Epilogue";
+  src: url("../fonts/Epilogue-Regular.ttf");
+}
 
 html {
   -ms-text-size-adjust: 100%;
