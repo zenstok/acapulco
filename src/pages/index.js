@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
+import Button from "@mui/material/Button"
+import TextField from "@mui/material/TextField"
+import TextareaAutosize from "@mui/material/TextareaAutosize"
+
 import { StaticImage } from "gatsby-plugin-image"
 
 const Container = styled.div`
@@ -18,13 +22,13 @@ const DemoContent = styled.div`
   width: 100%;
   height: 100%;
   border-bottom: 1px solid black;
-  
+
   h3 {
     font-family: "Fascinate";
   }
 `
 
-const RestaurantContent = styled.div`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -32,6 +36,39 @@ const RestaurantContent = styled.div`
   background-color: #fffbfb;
   padding: 0 32px;
 `
+
+const ContentHeaderText = styled.div`
+  font-family: "Fascinate";
+  font-size: 3rem;
+  margin-bottom: 48px;
+`
+
+const ContentText = styled.div`
+  text-align: justify;
+`
+
+const ContentSection = styled.div`
+  flex: 1 0 0;
+  padding: 16px;
+`
+
+const EvenimenteFormSection = styled(ContentSection)`
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+
+  > *:not(:first-child) {
+    border-radius: 6px;
+    width: 75%;
+  }
+
+  textarea {
+    padding: 16.5px 14px;
+    border-color: rgba(0, 0, 0, 0.23)
+  }
+`
+
+const RestaurantContent = styled(Content)``
 
 const RestaurantHeaderText = styled.div`
   font-family: "Fascinate";
@@ -41,13 +78,12 @@ const RestaurantHeaderText = styled.div`
 
 const RestaurantText = styled.div`
   text-align: justify;
-`;
+`
 
 const RestaurantSection = styled.div`
   flex: 1 0 0;
   padding: 16px;
 `
-
 
 
 const ImageContainer = styled.div`
@@ -99,7 +135,7 @@ const MenuItem = styled.div`
 `
 
 const LogoContainer = styled.div`
-cursor: pointer;
+  cursor: pointer;
 `
 
 const FixedMenu = styled.div`
@@ -129,7 +165,7 @@ const FixedArrow = styled.div`
   align-items: center;
   background: #d9c7c76e;
   border-radius: 6px;
-  
+
   :hover {
     background: gray;
   }
@@ -161,57 +197,33 @@ export const shouldShowFixedSidebar = (element) => {
 
   const rect = element.getBoundingClientRect()
 
-  if(rect.top === 0) {
-    return false;
+  if (rect.top === 0) {
+    return false
   }
 
   return rect.top <= -rect.height
 }
 
-const dispatchOnWheelChange = (data) => {
-  const event = new Event("onwheelchange")
-  event.data = data
-  window.dispatchEvent(event)
-}
-
-function debounce(func, timeout = 300) {
-  let timer
-  let count = 0
-  return (...args) => {
-    count++
-    clearTimeout(timer)
-    console.log(count)
-    timer = setTimeout(() => {
-      func.apply(this, args)
-    }, timeout)
-  }
-}
-
-const debouncedCall = debounce((e) => window.scrollTo({
-  top: e.data.nextNumber * e.data.fullWidthContainer.current.scrollHeight,
-  behavior: "smooth"
-}), 100)
-
 
 const scrollIntoView = selectorId => {
   document.querySelector(selectorId).scrollIntoView({
-    behavior: 'smooth',
+    behavior: "smooth"
   })
 }
 
-function MenuItemComponent({selectorId, children}) {
+function MenuItemComponent({ selectorId, children }) {
   return <MenuItem onClick={() => scrollIntoView(selectorId)}>{children}</MenuItem>
 }
 
 export default function Demo() {
   const fullWidthContainer = useRef()
   const [showFixedMenu, setShowMenuSidebar] = useState(false)
-  const lastWindow = useRef(null)
+
   useEffect(() => {
     setShowMenuSidebar(shouldShowFixedSidebar(fullWidthContainer.current))
   }, [fullWidthContainer])
+
   useEffect(() => {
-    window.addEventListener("onwheelchange", debouncedCall)
     window.onwheel = (e) => {
       setShowMenuSidebar(shouldShowFixedSidebar(fullWidthContainer.current))
       if (e.deltaY >= 20 || e.deltaY <= -20) {
@@ -219,20 +231,14 @@ export default function Demo() {
         if (![].some.call(currentContainer?.nextElementSibling?.classList, className => /order-.*/.test(className))) {
           return
         }
-        // if(lastWindow.current === currentContainer) {
-        //   console.log(window.pageYOffset);
-        // } else {
-        //   console.warn(currentContainer)
+
         let nextNumber = [].find.call(currentContainer?.nextElementSibling?.classList,
           className => /order-.*/.test(className)).slice(-1)
 
         if (e.deltaY < 0) {
           nextNumber = nextNumber - 2
         }
-        // dispatchOnWheelChange({nextNumber, fullWidthContainer});
         window.scrollTo({ top: nextNumber * fullWidthContainer.current.scrollHeight, behavior: "smooth" })
-        // }
-        // lastWindow.current = currentContainer;
       }
     }
   }, [])
@@ -267,38 +273,86 @@ export default function Demo() {
         <RestaurantSection>
           <RestaurantHeaderText>Descoperă locația nostră</RestaurantHeaderText>
           <RestaurantText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+            aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
           </RestaurantText>
         </RestaurantSection>
         <RestaurantSection>
-          <StaticImage src="https://lafelinare.com/wp-content/uploads/2020/06/E48DA022-8425-42A6-963E-3F6F92598C02-scaled.jpg"
-                       alt="img"
-                       style={{height: '600px'}}
+          <StaticImage
+            src="https://lafelinare.com/wp-content/uploads/2020/06/E48DA022-8425-42A6-963E-3F6F92598C02-scaled.jpg"
+            alt="img"
+            style={{ height: "600px" }}
           />
         </RestaurantSection>
       </RestaurantContent>
     </Container>
     <Container className="order-2" id="meniu">
-      <DemoContent>
-        <h3>
-          Meniu Content
-        </h3>
-      </DemoContent>
+      <Content>
+        <ContentSection>
+          <StaticImage
+            src="https://lafelinare.com/wp-content/uploads/2020/06/76C4DED8-B22B-488C-9CAC-81945CAA6C0A-scaled.jpg"
+            alt="img"
+            style={{ height: "600px" }}
+          />
+        </ContentSection>
+        <ContentSection>
+          <ContentHeaderText>Meniu</ContentHeaderText>
+          <ContentText>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+            rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+            explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+          </ContentText>
+          <Button variant="contained" style={{ marginTop: "8px" }}>Descoperă meniul</Button>
+        </ContentSection>
+      </Content>
     </Container>
     <Container className="order-3" id="evenimente">
-      <DemoContent>
-        <h3>
-          Evenimente Content
-        </h3>
-      </DemoContent>
+      <Content>
+        <ContentSection>
+          <ContentHeaderText>Evenimente</ContentHeaderText>
+          <ContentText>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+            rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+            explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+          </ContentText>
+        </ContentSection>
+        <EvenimenteFormSection>
+          <div>Scrie-ne mai jos ce eveniment iti dorești la noi</div>
+          <TextField id="nume" label="Nume" variant="outlined" />
+          <TextareaAutosize aria-label="minimum height"
+                            minRows={3}
+                            maxRows={7}
+                            placeholder="Detalii"
+          />
+          <Button variant="contained">Trimite cerere</Button>
+        </EvenimenteFormSection>
+      </Content>
     </Container>
     <Container className="order-4" id="rezervari">
-      <DemoContent>
-        <h3>
-          Rezervari Content
-        </h3>
-      </DemoContent>
+      <Content>
+        <ContentSection>
+          <ContentHeaderText>Fă o rezervare online</ContentHeaderText>
+        </ContentSection>
+        <ContentSection>
+          <TextField id="nume" label="Nume" variant="outlined" />
+        </ContentSection>
+      </Content>
     </Container>
     <Container className="order-5" id="contact">
       <DemoContent>
@@ -321,7 +375,10 @@ export default function Demo() {
           <MenuItemComponent selectorId="#meniu">Meniu</MenuItemComponent>
           <MenuItemComponent selectorId="#evenimente">Evenimente</MenuItemComponent>
         </DashedBorder>
-        <LogoContainer onClick={() => {setShowMenuSidebar(false); scrollIntoView('#home')}}>
+        <LogoContainer onClick={() => {
+          setShowMenuSidebar(false)
+          scrollIntoView("#home")
+        }}>
           <StaticImage
             style={{ borderRadius: "16px", height: "100px" }}
             src="../images/corina_logo_acapulco.jpeg"
@@ -336,7 +393,10 @@ export default function Demo() {
         </DashedBorder>
       </MenuContainer>
     </FixedMenu>
-    <FixedArrow showFixedMenu={showFixedMenu} onClick={() => window.scrollTo({top: 0, behavior: "smooth" })}>
+    <FixedArrow showFixedMenu={showFixedMenu} onClick={() => {
+      setShowMenuSidebar(false)
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }}>
       <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
         <path d="M11 2.206l-6.235 7.528-.765-.645 7.521-9 7.479 9-.764.646-6.236-7.53v21.884h-1v-21.883z" />
       </svg>
